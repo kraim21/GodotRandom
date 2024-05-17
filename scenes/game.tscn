@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://b3i57o1w6b1s8"]
+[gd_scene load_steps=12 format=3 uid="uid://b3i57o1w6b1s8"]
 
 [ext_resource type="PackedScene" uid="uid://birlmp6j2kxq4" path="res://scenes/player.tscn" id="1_aapxy"]
 [ext_resource type="Texture2D" uid="uid://i6kgwfo7ru7j" path="res://assets/sprites/world_tileset.png" id="2_rr8hl"]
 [ext_resource type="PackedScene" uid="uid://chi8afw6yhkmk" path="res://scenes/platform.tscn" id="3_rwhnm"]
 [ext_resource type="PackedScene" uid="uid://b6wiikipwpvrh" path="res://scenes/coin.tscn" id="4_nauhd"]
+[ext_resource type="PackedScene" uid="uid://uwc6yheipcs5" path="res://scenes/killzone.tscn" id="5_culj5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_igx60"]
 texture = ExtResource("2_rr8hl")
@@ -410,6 +411,21 @@ texture = ExtResource("2_rr8hl")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_igx60")
 
+[sub_resource type="Animation" id="Animation_4801b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(217, 16)]
+}
+
 [sub_resource type="Animation" id="Animation_gwvhd"]
 resource_name = "move"
 loop_mode = 2
@@ -426,28 +442,21 @@ tracks/0/keys = {
 "values": [Vector2(217, 16), Vector2(282, 16)]
 }
 
-[sub_resource type="Animation" id="Animation_4801b"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(217, 16)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p7yxd"]
 _data = {
 "RESET": SubResource("Animation_4801b"),
 "move": SubResource("Animation_gwvhd")
 }
 
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_qrmq1"]
+
 [node name="Game" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_28bji")
+rendering_quadrant_size = 15
+format = 2
+layer_0/tile_data = PackedInt32Array(196607, 0, 0, 131072, 0, 0, 131073, 0, 0, 65539, 0, 0, -131065, 0, 0, -131064, 0, 0, 6, 0, 0, 262141, 0, 0, 262140, 0, 0, 262139, 0, 0, 131067, 0, 0, 131066, 0, 0, -7, 0, 0, -6, 0, 0, -8, 0, 0, 196614, 0, 0, 196615, 0, 0, 65547, 0, 0, 327675, 0, 1, 327676, 0, 1, 196602, 0, 1, 262138, 0, 1, 65528, 0, 1, 65529, 0, 1, 131065, 0, 1, 262143, 0, 1, 196608, 0, 1, 262150, 0, 1, 262151, 0, 1, 131082, 0, 1, 131083, 0, 1, 5, 0, 0, -65531, 0, 5, -131067, 0, 4, -196603, 0, 4, -262139, 0, 3, -65544, 65536, 5, 10, 65536, 5, 131079, 65536, 5, 393214, 458752, 0, 393215, 458752, 0, 327680, 458752, 0, 327681, 458752, 0, 327682, 458752, 0, 458750, 393216, 1, 458751, 393216, 1, 393216, 393216, 1, 393217, 393216, 1, 393218, 393216, 1, 262148, 458752, 1, 262149, 458752, 1, 327684, 393216, 1, 327685, 393216, 1, 393220, 393216, 1, 393221, 393216, 1, 65540, 589824, 0, 65541, 589824, 0, 65542, 589824, 0, 65543, 589824, 0, 65544, 589824, 0, 65545, 589824, 0, 65546, 458752, 0, 65555, 458752, 0, 65556, 458752, 0, 65557, 458752, 0, 65558, 458752, 0, 65559, 458752, 0, 65560, 458752, 0, 65561, 458752, 0, 65562, 458752, 0, 65563, 458752, 0, -131051, 524288, 2, -131054, 524288, 2)
 
 [node name="Player" parent="." instance=ExtResource("1_aapxy")]
 position = Vector2(3, -7)
@@ -455,13 +464,9 @@ position = Vector2(3, -7)
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -5)
 zoom = Vector2(4, 4)
+limit_bottom = 130
+limit_smoothed = true
 position_smoothing_enabled = true
-
-[node name="TileMap" type="TileMap" parent="."]
-tile_set = SubResource("TileSet_28bji")
-rendering_quadrant_size = 15
-format = 2
-layer_0/tile_data = PackedInt32Array(196607, 0, 0, 131072, 0, 0, 131073, 0, 0, 65539, 0, 0, -131065, 0, 0, -131064, 0, 0, 6, 0, 0, 262141, 0, 0, 262140, 0, 0, 262139, 0, 0, 131067, 0, 0, 131066, 0, 0, -7, 0, 0, -6, 0, 0, -8, 0, 0, 196614, 0, 0, 196615, 0, 0, 65547, 0, 0, 327675, 0, 1, 327676, 0, 1, 196602, 0, 1, 262138, 0, 1, 65528, 0, 1, 65529, 0, 1, 131065, 0, 1, 262143, 0, 1, 196608, 0, 1, 262150, 0, 1, 262151, 0, 1, 131082, 0, 1, 131083, 0, 1, 5, 0, 0, -65531, 0, 5, -131067, 0, 4, -196603, 0, 4, -262139, 0, 3, -65544, 65536, 5, 10, 65536, 5, 131079, 65536, 5, 393214, 458752, 0, 393215, 458752, 0, 327680, 458752, 0, 327681, 458752, 0, 327682, 458752, 0, 458750, 393216, 1, 458751, 393216, 1, 393216, 393216, 1, 393217, 393216, 1, 393218, 393216, 1, 262148, 458752, 1, 262149, 458752, 1, 327684, 393216, 1, 327685, 393216, 1, 393220, 393216, 1, 393221, 393216, 1, 65540, 589824, 0, 65541, 589824, 0, 65542, 589824, 0, 65543, 589824, 0, 65544, 589824, 0, 65545, 589824, 0, 65546, 458752, 0, 65555, 458752, 0, 65556, 458752, 0, 65557, 458752, 0, 65558, 458752, 0, 65559, 458752, 0, 65560, 458752, 0, 65561, 458752, 0, 65562, 458752, 0, 65563, 458752, 0, -131051, 524288, 2, -131054, 524288, 2)
 
 [node name="Platform" parent="." instance=ExtResource("3_rwhnm")]
 position = Vector2(-38, -26)
@@ -484,14 +489,22 @@ libraries = {
 }
 autoplay = "move"
 
-[node name="Coin" parent="." instance=ExtResource("4_nauhd")]
+[node name="Killzone" parent="." instance=ExtResource("5_culj5")]
+position = Vector2(1, 132)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
+shape = SubResource("WorldBoundaryShape2D_qrmq1")
+
+[node name="Coins" type="Node" parent="."]
+
+[node name="Coin" parent="Coins" instance=ExtResource("4_nauhd")]
 position = Vector2(-42, 28)
 
-[node name="Coin2" parent="." instance=ExtResource("4_nauhd")]
+[node name="Coin2" parent="Coins" instance=ExtResource("4_nauhd")]
 position = Vector2(-76, -51)
 
-[node name="Coin3" parent="." instance=ExtResource("4_nauhd")]
+[node name="Coin3" parent="Coins" instance=ExtResource("4_nauhd")]
 position = Vector2(113, -58)
 
-[node name="Coin4" parent="." instance=ExtResource("4_nauhd")]
+[node name="Coin4" parent="Coins" instance=ExtResource("4_nauhd")]
 position = Vector2(293, -59)
